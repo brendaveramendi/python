@@ -26,3 +26,6 @@ first_name = input('What is your name: ')
 last_name = input('What is your last name: ')
 
 print(first_name, last_name)
+#forzamo el tipo
+#Solo nos indica que quiero un tipo de dato
+adress: str = "Mi direccion"
