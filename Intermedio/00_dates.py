@@ -51,3 +51,19 @@ print('<------->',diff)
 diff = year_2024.date() - current_date
 
 print(diff)
+
+"""Date Time"""
+
+birday = datetime(2011,9,21)
+print('Birday...',birday )
+
+now_present = datetime.now()
+print(now_present)
+
+print('Cumpleaños --->', now_present - birday)
+
+#TIMEDELTA
+
+start_timedelta = timedelta(200,100,100, weeks = 10)
+end_timedelta = timedelta(200,100,100,weeks = 13)
+print(end_timedelta - start_timedelta)
