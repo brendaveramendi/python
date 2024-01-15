@@ -68,7 +68,7 @@ Hecho esto, imprime los números primos entre 1 y 100.
 print("----------------------")
 
 def primo():
-  for index in range(1,101):
+  for index in range(2,101):
     flag = True
     for i in range(2,index//2+1):
       if(index%i==0):
@@ -82,4 +82,18 @@ def primo():
 print("*********************")        
 primo()
    
-print(15//2)
+"""
+INVIRTIENDO CADENAS
+Crea un programa que invierta el orden de una cadena de texto
+sin usar funciones propias del lenguaje que lo hagan de forma automática.
+- Si le pasamos "Hola mundo" nos retornaría "odnum aloH"
+"""
+
+def reverse_string(word_reverse):
+  reverse =""
+  tex_len = len(word_reverse)
+  for i in range (0,tex_len):
+    reverse+=word_reverse[tex_len-i-1]
+  print(reverse)
+    
+reverse_string("Hola mundo")
