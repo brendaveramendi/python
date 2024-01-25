@@ -16,16 +16,20 @@ class User(BaseModel):
 users_list = [User(id=1, name="Pamela",apellido="Veramendi"),User(id=2, name="Rebeca",apellido="Veramendi"),User(id=3,name="Brenda",apellido="Veramendi")]
 
 
-@app.get("/usersjson")
+@app.get("/users")
 async def usersjson():
-  return [{"name":"Brenda","Apellido":"Veramendi"},{"name":"Rebeca","Apellido":"Veramendi"}]
+  return users_list
 
-@app.get("/user/{id}")
+@app.get("/user/{id}") #Path
 async def user(id:int):
   #Filter me devuelve un objeto de tipo iterador
   users = filter(lambda user: user.id == id,users_list)
   print(users)
-  return list(users)
+  return list(users)[0]
+
+@app.get("/user/") #Query
+async def user(id:int):
+  return search_user(id)
 
 def search_user(id: int):
   users = filter(lambda user: user.id == id, users_list)
@@ -33,8 +37,8 @@ def search_user(id: int):
     return list(users)[0]
   except:
     return{"erro":"Usuario excistente"}
-
-@app.post("/user/")
+#POST
+@app.post("/user/") #Query
 async def user(user: User):
   if type(search_user(user.id))==User:
     print(users_list)
@@ -42,3 +46,20 @@ async def user(user: User):
   else:
     users_list.append(user)
 
+#PUT
+#Se usa cuando se actualiza el objeto completo
+#PUTH se usa cuando se actualiza un atributo del objeto
+@app.put("/user/")
+async def user(user:User):
+  for index, saved_user in enumerate(users_list):
+    if saved_user.id == user.id:
+      users_list[index] = user
+      return user
+    else:
+      return {"Error":"No se  ha encontrado el ususario"}
+
+@app.delete("/user/{id}")
+async def user(id:int):
+  for index, saved_user in enumerate(users_list):
+    if saved_user.id == id:
+      del users_list[index]
