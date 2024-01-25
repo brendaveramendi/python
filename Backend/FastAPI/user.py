@@ -26,3 +26,19 @@ async def user(id:int):
   users = filter(lambda user: user.id == id,users_list)
   print(users)
   return list(users)
+
+def search_user(id: int):
+  users = filter(lambda user: user.id == id, users_list)
+  try:
+    return list(users)[0]
+  except:
+    return{"erro":"Usuario excistente"}
+
+@app.post("/user/")
+async def user(user: User):
+  if type(search_user(user.id))==User:
+    print(users_list)
+    return{"erro":"Usuario excistente"}
+  else:
+    users_list.append(user)
+
