@@ -1,5 +1,5 @@
 from typing import Union
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
 app = FastAPI()
@@ -38,11 +38,10 @@ def search_user(id: int):
   except:
     return{"erro":"Usuario excistente"}
 #POST
-@app.post("/user/") #Query
+@app.post("/user/",response_model=User,status_code=201) #Query
 async def user(user: User):
   if type(search_user(user.id))==User:
-    print(users_list)
-    return{"erro":"Usuario excistente"}
+    return HTTPException(204,detail="El usuario ya existe")
   else:
     users_list.append(user)
 
