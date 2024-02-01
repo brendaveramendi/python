@@ -3,7 +3,9 @@ from pydantic import BaseModel
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import jwt
 from passlib.context import CryptContext
+from datetime import datetime, timedelta
 ALGORTITHM = "HS256"
+
 app = FastAPI()
 
 oauth2 = OAuth2PasswordBearer(tokenUrl="login")
@@ -11,7 +13,7 @@ crypt = CryptContext(schemes=["bcrypt"])
 ACCESS_TOKEN_DURATION = 1
 
 class User(BaseModel):
-  username: str
+  username: str 
   full_name: str
   email: str
   disable: bool
@@ -50,15 +52,19 @@ def search_user(username: str):
 @app.post("/login")
 async def login(form: OAuth2PasswordRequestForm = Depends()):
     user_db = users_db.get(form.username)
+    print("---A",user_db)
     if not user_db:
       raise HTTPException(
         status_code=status.HTTP_400_BAD_REQUEST, detail="El usuario no es correcto")
+
     user = search_user_db(form.username)
-    
-    
     if not crypt.verify(form.password,user.password):
      raise HTTPException(
        status_code=status.HTTP_400_BAD_REQUEST, detail = "contraseña incorrecta")
-     return {"acces_token":user.username,"token_type":"bearer"}
+    expire = datetime.utcnow()+timedelta(minutes=ACCESS_TOKEN_DURATION)
+    acces_token = {"sub":user.name,"exp":expire}
+    return {"acces_token":acces_token,"token_type":"bearer"}
    
+
+
 
